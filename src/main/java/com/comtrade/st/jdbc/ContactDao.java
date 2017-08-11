@@ -15,4 +15,5 @@ import java.util.List;
 public interface ContactDao {
 	String findLastNameById(Long id);
 	public List<Contact> findAll();
+	public List<Contact> findAllWithDetail();
 }//end ContactDao
