@@ -6,10 +6,13 @@
 
 package com.comtrade.st.jdbc;
 
+import java.util.List;
+
 /**
  *
  * @author radoo
  */
 public interface ContactDao {
 	String findLastNameById(Long id);
+	public List<Contact> findAll();
 }//end ContactDao

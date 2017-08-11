@@ -6,6 +6,7 @@
 
 package com.comtrade.st.jdbc;
 
+import java.util.List;
 import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,10 @@ public class Run {
 		JdbcContactDao contactDao = (JdbcContactDao)ctx.getBean("contactDao");
 		String last_name = contactDao.findLastNameById(1L);
 		System.out.println(last_name);
+
+		List<Contact> contacts = contactDao.findAll();
+		for (Contact c : contacts){
+			System.out.println(c.toString());
+		}//end for
 	}//end main
 }//end Run

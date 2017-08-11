@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -68,5 +69,19 @@ public class Config {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate();
 		jdbcTemplate.setDataSource(dataSource);
 		return jdbcTemplate;
+	}//end jdbcTemplate
+	/**
+	 * <p>
+	 * jdbc template with ds     
+	 * </p>
+	 * @param  param  param_desc   
+	 * @return NamedParameterJdbcTemplate   
+	 * Changes:
+	 * @author author_name date  created  
+	 */
+	@Bean
+	public  NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		return namedParameterJdbcTemplate;
 	}//end jdbcTemplate
 }//end Config
