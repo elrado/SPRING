@@ -57,7 +57,7 @@ public class Config {
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.h2.Driver");
-		dataSource.setUrl("jdbc:h2:file:d:/temp/h2test;DB_CLOSE_ON_EXIT=FALSE");
+		dataSource.setUrl("jdbc:h2:file:d:/Delo/Sw/Java/ST/ST/src/main/resources/h2test;DB_CLOSE_ON_EXIT=FALSE");
 		return dataSource;
 	}//end datasource		
 
@@ -90,7 +90,7 @@ public class Config {
 	Properties hibernateProperties() {
 		Properties properties = new Properties();
 		properties.setProperty("connection.driver_class", "org.h2.Driver");
-		properties.setProperty("connection.url", "jdbc:h2:file:d:/temp/h2test;DB_CLOSE_ON_EXIT=FALSE");
+		properties.setProperty("connection.url", "jdbc:h2:file:d:/Delo/Sw/Java/ST/ST/src/main/resources/h2test;DB_CLOSE_ON_EXIT=FALSE");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		properties.setProperty("hibernate.max_fetch_depth", "3");
 		properties.setProperty("hibernate.jdbc.fetch_size", "5");
