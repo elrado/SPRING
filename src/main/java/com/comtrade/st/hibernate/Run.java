@@ -6,6 +6,10 @@
 package com.comtrade.st.hibernate;
 
 import com.comtrade.st.jdbc.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import static java.time.temporal.TemporalQueries.localDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.apache.log4j.Logger;
@@ -55,5 +59,30 @@ public class Run {
 				}
 			}//end if
 		}
+		System.out.println("****************************contacts findById********************************************");
+		Contact contact = contactDao.findById(4L);
+		System.out.println("Listing contact with id 4");
+		System.out.println(contact);
+
+
+		System.out.println("****************************contacts insert********************************************");
+
+		contact = new Contact();
+		contact.setFirstName("Vladka");
+		contact.setLastName("Osredkar");
+		contact.setBirthDate(new Date());
+		System.out.println(contact);
+
+		System.out.println("****************************contacts update********************************************");
+		
+		contact.setBirthDate(Date.from(LocalDate.parse("1980-07-01").atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		contact = contactDao.save(contact);
+		System.out.println(contact);
+
+		System.out.println("****************************contacts delete********************************************");
+		System.out.println("Before deletion " + contactDao.findAll().size());
+		contactDao.delete(contact);
+		System.out.println("After deletion " + contactDao.findAll().size());
+		
 	}//end main
 }//end Run

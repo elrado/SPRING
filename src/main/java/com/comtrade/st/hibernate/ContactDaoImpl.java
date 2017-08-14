@@ -31,23 +31,29 @@ public class ContactDaoImpl implements ContactDao {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Contact> findAllWithDetail() {
 		return sessionFactory.getCurrentSession()
 			.getNamedQuery("Contact.findAllWithDetail").list();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Contact findById(Long id) {
-		return null;
+		return (Contact) sessionFactory.getCurrentSession()
+			.getNamedQuery("Contact.findById")
+			.setParameter("id", id).uniqueResult();
 	}
 
 	@Override
 	public Contact save(Contact contact) {
-		return null;
+		sessionFactory.getCurrentSession().saveOrUpdate(contact);
+		return contact;
 	}
 
 	@Override
 	public void delete(Contact contact) {
+		sessionFactory.getCurrentSession().delete(contact);
 	}
 
 	public SessionFactory getSessionFactory() {
