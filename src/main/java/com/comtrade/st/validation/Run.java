@@ -21,6 +21,11 @@ public class Run {
 
 	private static final Logger logger = Logger.getLogger(Run.class);
 
+		enum eTestType {
+			a,
+			b,
+			c
+		}
 	public static void main(String[] args) throws MalformedURLException {
 		ApplicationContext ctx
 			= new AnnotationConfigApplicationContext(Config.class);
@@ -33,6 +38,15 @@ public class Run {
 
 		System.out.println(
 			conversionService.convert(contact, AnotherContact.class)
+		);
+		System.out.println(
+			conversionService.convert(contact, AnotherContact.class)
+		);
+
+		//IntegerToEnum
+		System.out.println(eTestType.a);
+		System.out.println(
+			conversionService.convert(eTestType.b, Integer.class)
 		);
 
 	}//end main
