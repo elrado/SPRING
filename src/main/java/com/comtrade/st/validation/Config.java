@@ -29,7 +29,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 public class Config {
 
 	@Bean("contact")
-	public Contact contact (ConversionService conversionService ){
+	public Contact contact(ConversionService conversionService) {
 		Contact ct = new Contact();
 		//ct.setBirthDate( conversionService.convert("06.05.1977"));
 		ct.setFirstName("Rado");
@@ -38,15 +38,21 @@ public class Config {
 	}
 
 	@Bean("conversionService")
-	public ConversionService conversionService(StringToDateTimeConverter stringToDateTimeConverter) {
-          DefaultConversionService service = new DefaultConversionService();
-          service.addConverter(stringToDateTimeConverter);
-          return service;
+	public ConversionService conversionService(StringToDateTimeConverter stringToDateTimeConverter, ContactToAnotherContactConverter contactToAnotherContactConverter) {
+		DefaultConversionService service = new DefaultConversionService();
+		service.addConverter(stringToDateTimeConverter);
+		service.addConverter(contactToAnotherContactConverter);
+		return service;
 	}
 
 	@Bean("stringToDateTimeConverter")
-	public StringToDateTimeConverter stringToDateTimeConverter(){
+	public StringToDateTimeConverter stringToDateTimeConverter() {
 		return new StringToDateTimeConverter();
+	}
+
+	@Bean("contactToAnotherContactConverter")
+	public ContactToAnotherContactConverter contactToAnotherContactConverter() {
+		return new ContactToAnotherContactConverter();
 	}
 
 	/**

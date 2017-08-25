@@ -31,5 +31,9 @@ public class Run {
 			conversionService.convert("6.5.1977", DateTime.class ));
 		System.out.println(contact.toString());
 
+		System.out.println(
+			conversionService.convert(contact, AnotherContact.class)
+		);
+
 	}//end main
 }//end Run
