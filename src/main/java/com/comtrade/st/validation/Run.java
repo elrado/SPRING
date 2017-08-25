@@ -1,0 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.comtrade.st.validation;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.convert.ConversionService;
+
+/**
+ *
+ * @author radoo
+ */
+public class Run {
+
+	private static final Logger logger = Logger.getLogger(Run.class);
+
+	public static void main(String[] args) throws MalformedURLException {
+		ApplicationContext ctx
+			= new AnnotationConfigApplicationContext(Config.class);
+		Contact contact = (Contact) ctx.getBean("contact");
+		ConversionService conversionService = (ConversionService) ctx.getBean("conversionService");
+		contact.setPersonalSite(new URL("http://www.dtzq.com"));
+		contact.setBirthDate(
+			conversionService.convert("6.5.1977", DateTime.class ));
+		System.out.println(contact.toString());
+
+	}//end main
+}//end Run
