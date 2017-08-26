@@ -40,6 +40,7 @@ public class Run {
 		ConversionService conversionService = (ConversionService) ctx.getBean("conversionService");
 		DefaultFormattingConversionService acf = (DefaultFormattingConversionService) ctx.getBean("applicationConversionServiceFactoryBean");
 		Validator contactValidator = ctx.getBean("contactValidator", Validator.class);
+		Validator validator = ctx.getBean("validator", Validator.class);
 		contact.setPersonalSite(new URL("http://www.dtzq.com"));
 		contact.setBirthDate(
 			conversionService.convert("6.5.1977", DateTime.class));
@@ -78,6 +79,18 @@ public class Run {
 		System.out.println("No of validation errors: " + errors.size());
 		for (ObjectError error : errors) {
 			System.out.println(error.getCode());
+		}
+
+		Customer customer = new Customer();
+		customer.setFirstName("R");
+		customer.setLastName("Osredkar");
+
+		result = new BeanPropertyBindingResult(customer, "Rado");
+		validator.validate(customer, result);
+		System.out.println("No of validation errors: " + errors.size());
+		for (ObjectError error : result.getAllErrors()) {
+			System.out.print(error.getCode() + ": ");
+			System.out.println(error.getDefaultMessage());
 		}
 
 	}//end main

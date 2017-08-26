@@ -13,7 +13,9 @@ import java.util.Set;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.DefaultConversionService;
@@ -22,13 +24,20 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 /**
  *
  * @author radoo
  */
 @Configuration
+@PropertySource(value="classpath:resource.properties")
 public class Config {
+
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+		return new PropertySourcesPlaceholderConfigurer();
+	}
 
 	@Bean("contact")
 	public Contact contact(ConversionService conversionService) {
@@ -59,13 +68,18 @@ public class Config {
 	}
 
 	@Bean
-	public ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean(){
+	public ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean() {
 		return new ApplicationConversionServiceFactoryBean();
 	}
 
 	@Bean
-	public ContactValidator contactValidator(){
+	public ContactValidator contactValidator() {
 		return new ContactValidator();
+	}
+
+	@Bean
+	public LocalValidatorFactoryBean validator() {
+		return new LocalValidatorFactoryBean();
 	}
 
 	/**

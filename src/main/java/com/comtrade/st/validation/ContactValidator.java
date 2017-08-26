@@ -6,6 +6,7 @@
 
 package com.comtrade.st.validation;
 
+import org.joda.time.DateTime;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -25,7 +26,7 @@ public class ContactValidator implements Validator {
 	public void validate(Object o, Errors errors) {
 		ValidationUtils.rejectIfEmpty(errors, "firstName", "Firstname.empty");
 		Contact c = (Contact)o;
-		if ( (2017- c.getBirthDate().getYear())<18){
+		if ( (DateTime.now().getYear() - c.getBirthDate().getYear())<18){
 			errors.reject("Too young");
 		}
 	}
