@@ -6,7 +6,9 @@
 package com.comtrade.st.validation;
 
 import com.comtrade.st.jdbc.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +42,7 @@ public class Config {
 	@Bean("conversionService")
 	public ConversionService conversionService(StringToDateTimeConverter stringToDateTimeConverter, ContactToAnotherContactConverter contactToAnotherContactConverter) {
 		DefaultConversionService service = new DefaultConversionService();
+		List<Converter> converters = new ArrayList<Converter>();
 		service.addConverter(stringToDateTimeConverter);
 		service.addConverter(contactToAnotherContactConverter);
 		return service;
@@ -53,6 +56,11 @@ public class Config {
 	@Bean("contactToAnotherContactConverter")
 	public ContactToAnotherContactConverter contactToAnotherContactConverter() {
 		return new ContactToAnotherContactConverter();
+	}
+
+	@Bean
+	public ApplicationConversionServiceFactoryBean applicationConversionServiceFactoryBean(){
+		return new ApplicationConversionServiceFactoryBean();
 	}
 
 	/**
