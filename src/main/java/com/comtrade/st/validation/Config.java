@@ -63,6 +63,11 @@ public class Config {
 		return new ApplicationConversionServiceFactoryBean();
 	}
 
+	@Bean
+	public ContactValidator contactValidator(){
+		return new ContactValidator();
+	}
+
 	/**
 	 * <p>
 	 * init ds
