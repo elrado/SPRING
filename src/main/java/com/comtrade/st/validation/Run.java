@@ -92,6 +92,18 @@ public class Run {
 			System.out.print(error.getCode() + ": ");
 			System.out.println(error.getDefaultMessage());
 		}
+		//System.out.println("*****************************************Custom validation CheckIndividualCustomer**********************************************");
+		customer = new Customer();
+		customer.setFirstName("Rado");
+		customer.setCustomerType(CustomerType.CORPORATE);
+
+		result = new BeanPropertyBindingResult(customer, "Rado");
+		validator.validate(customer, result);
+		System.out.println("No of validation errors: " + errors.size());
+		for (ObjectError error : result.getAllErrors()) {
+			System.out.print(error.getCode() + ": ");
+			System.out.println(error.getDefaultMessage());
+		}
 
 	}//end main
 }//end Run

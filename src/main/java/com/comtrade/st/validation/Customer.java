@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
  *
  * @author radoo
  */
+@CheckIndividualCustomer(message = "{errors.customer.lastName.defined}")
 public class Customer {
 
 	@NotNull
@@ -44,7 +45,4 @@ public class Customer {
 	public void setCustomerType(CustomerType customerType) {
 		this.customerType = customerType;
 	}
-
-	
-
 }//end Customer
