@@ -5,6 +5,7 @@
  */
 package com.comtrade.st.validation;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -44,5 +45,16 @@ public class Customer {
 
 	public void setCustomerType(CustomerType customerType) {
 		this.customerType = customerType;
+	}
+
+	@AssertTrue(message = "{errors.customer.firstAndlastName.defined}")
+	public boolean hasFirstAndLastName(){
+		boolean result = false;
+		if (this.getFirstName() != null && this.getLastName() == null) {
+			result = true;
+		} else {
+			result = false;
+		}
+		return result;
 	}
 }//end Customer
