@@ -6,6 +6,7 @@
 package com.comtrade.st.taskscheduling;
 
 import java.net.MalformedURLException;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -21,6 +22,12 @@ public class Run {
 	public static void main(String[] args) throws MalformedURLException {
 		ApplicationContext ctx
 			= new AnnotationConfigApplicationContext(Config.class);
-	System.out.println("*****************************************Spring task scheduling**********************************************");
+		System.out.println("*****************************************Spring task scheduling**********************************************");
+		CarService carService = (CarService) ctx.getBean("carService", CarService.class);
+
+		List<Car> cars = carService.findAll();
+		for (Car car : cars) {
+			System.out.println(car.toString());
+		}
 	}//end main
 }//end Run
