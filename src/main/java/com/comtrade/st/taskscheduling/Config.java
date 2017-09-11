@@ -6,15 +6,14 @@
 package com.comtrade.st.taskscheduling;
 
 import java.io.IOException;
-import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -71,5 +70,17 @@ public class Config {
 		jpaTransactionManager.setEntityManagerFactory(emf);
 		return jpaTransactionManager;
 	}
+
+	@Bean("simpleAsyncTaskExecutor")
+	SimpleAsyncTaskExecutor simpleAsyncTaskExecutor(){
+		return new SimpleAsyncTaskExecutor();
+	}
+
+	@Bean("taskToExecute")
+	public TaskToExecute taskToExecute (SimpleAsyncTaskExecutor simpleAsyncTaskExecutor){
+		TaskToExecute _taskToExecute = new TaskToExecute();
+		_taskToExecute.setTaskExecutor(simpleAsyncTaskExecutor);
+		return _taskToExecute;
+	}//end taskToExecute
 
 }//end Config
