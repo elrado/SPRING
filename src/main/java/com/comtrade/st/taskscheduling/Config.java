@@ -23,6 +23,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  *
@@ -32,6 +33,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @PropertySource(value = "classpath:resource.properties")
 @ComponentScan(basePackages = "com.comtrade.st.taskscheduling")
 @EnableJpaRepositories(entityManagerFactoryRef = "emfactory")/**/
+@EnableScheduling
 public class Config {
 
 	@Bean("dataSource")

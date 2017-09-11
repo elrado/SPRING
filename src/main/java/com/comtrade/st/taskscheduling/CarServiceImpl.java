@@ -12,6 +12,7 @@ import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +42,9 @@ public class CarServiceImpl implements CarService {
 	}
 
 	@Override
+	@Scheduled(fixedRate = 5000)/*Pomoje bi bilo bolje da je to v Config-u???*/
 	public void updateCarAgeJob() {
+		System.out.println("***************************************TASK TRIGGERED***********************************************");
 		List<Car> cars = findAll();
 		DateTime currentDate = DateTime.now();
 		logger.info("Car age update job started");
@@ -53,5 +56,6 @@ public class CarServiceImpl implements CarService {
 			logger.info("Car age update--- " + car);
 		}
 		logger.info("Car age update job completed successfully");
+		System.out.println("***************************************TASK FINISHED***********************************************");
 	}
 }//end CarServiceImpl
