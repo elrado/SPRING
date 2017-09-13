@@ -6,7 +6,9 @@
 package com.comtrade.st.remoting;
 
 import java.net.MalformedURLException;
+import java.util.List;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -21,5 +23,20 @@ public class Run {
 	public static void main(String[] args) throws MalformedURLException {
 		ApplicationContext ctx
 			= new AnnotationConfigApplicationContext(Config.class);
+		ContactService contactService = (ContactService) ctx.getBean("contactService", ContactService.class);
+		
+
+		Contact c = new Contact();
+		c.setFirstName("Rado");
+		c.setLastName("Osredkar");
+		c.setBirthDate(new DateTime(1977,5,6,4,15));
+		contactService.save(c);
+
+		List<Contact> contacts = contactService.findAll();
+		for (Contact cnt : contacts){
+			System.out.println(cnt.toString());
+		}
+		/* pom.xml=>right click=>Rum Maven=>Goals=>compile war:war */
+		
 	}//end main
 }//end Run

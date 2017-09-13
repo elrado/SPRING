@@ -23,7 +23,9 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  *
@@ -34,6 +36,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(basePackages = "com.comtrade.st.remoting")
 @EnableJpaRepositories(entityManagerFactoryRef = "emfactory")/**/
 @EnableScheduling
+@EnableWebMvc
 public class Config {
 
 	@Bean("dataSource")
@@ -41,8 +44,8 @@ public class Config {
 		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
 		EmbeddedDatabase db = builder
 			.setType(EmbeddedDatabaseType.H2) //.H2 or .DERBY
-			.addScript("shema-car.sql")
-			.addScript("test-data-car.sql")
+			.addScript("shema.sql")
+			.addScript("test-data.sql")
 			.build();
 		return db;
 	}//end datasource		
@@ -52,7 +55,7 @@ public class Config {
 		LocalContainerEntityManagerFactoryBean emfactory = new LocalContainerEntityManagerFactoryBean();
 		emfactory.setDataSource(dataSource);
 		emfactory.setJpaVendorAdapter(jpaVendorAdapter);
-		emfactory.setPackagesToScan("com.comtrade.st.taskscheduling");
+		emfactory.setPackagesToScan("com.comtrade.st.remoting");
 		return emfactory;
 	}//end LocalContainerEntityManagerFactoryBean
 
@@ -71,4 +74,13 @@ public class Config {
 		jpaTransactionManager.setEntityManagerFactory(emf);
 		return jpaTransactionManager;
 	}
+
+	@Bean("contactExporter")
+	HttpInvokerServiceExporter contactExporter(ContactService contactService){
+		HttpInvokerServiceExporter contactExporter = new HttpInvokerServiceExporter();
+		contactExporter.setService(contactService);
+		contactExporter.setServiceInterface(ContactService.class);
+
+		return contactExporter;
+	}//end contactExporter
 }//end Config
