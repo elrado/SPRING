@@ -24,6 +24,7 @@ public class Run {
 		ApplicationContext ctx
 			= new AnnotationConfigApplicationContext(Config.class);
 		ContactService contactService = (ContactService) ctx.getBean("contactService", ContactService.class);
+		ContactService remoteContactService = (ContactService) ctx.getBean("remoteContactService", ContactService.class);
 		
 
 		Contact c = new Contact();
@@ -37,6 +38,15 @@ public class Run {
 			System.out.println(cnt.toString());
 		}
 		/* pom.xml=>right click=>Rum Maven=>Goals=>compile war:war */
+		/*V dependency nujno dodaj servlet-api + Contact mora biti Serializable*/
+		System.out.println("****************************************** remoteContactServices **********************************");
+		List<Contact> remoteContactServices = remoteContactService.findAll();
+		contacts = remoteContactService.findAll();
+		for (Contact cnt : contacts){
+			System.out.println(cnt.toString());
+		}
+
+		
 		
 	}//end main
 }//end Run

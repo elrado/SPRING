@@ -20,7 +20,7 @@ import javax.persistence.Version;
 
 @Entity
 @Table(name = "contact")
-public class Contact {
+public class Contact implements Serializable {
 
 	private Long id;
 	private int version;

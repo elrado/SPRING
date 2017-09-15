@@ -23,6 +23,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -36,7 +37,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan(basePackages = "com.comtrade.st.remoting")
 @EnableJpaRepositories(entityManagerFactoryRef = "emfactory")/**/
 @EnableScheduling
-@EnableWebMvc
 public class Config {
 
 	@Bean("dataSource")
@@ -67,20 +67,29 @@ public class Config {
 		hibernateJpaVendorAdapter.setDatabase(Database.H2);
 		return hibernateJpaVendorAdapter;
 	}
+
 	@Bean("transactionManager")
-	JpaTransactionManager transactionManager (EntityManagerFactory emf, DataSource dataSource){
-		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();	
+	JpaTransactionManager transactionManager(EntityManagerFactory emf, DataSource dataSource) {
+		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
 		jpaTransactionManager.setDataSource(dataSource);
 		jpaTransactionManager.setEntityManagerFactory(emf);
 		return jpaTransactionManager;
 	}
 
 	@Bean("contactExporter")
-	HttpInvokerServiceExporter contactExporter(ContactService contactService){
+	HttpInvokerServiceExporter contactExporter(ContactService contactService) {
 		HttpInvokerServiceExporter contactExporter = new HttpInvokerServiceExporter();
 		contactExporter.setService(contactService);
 		contactExporter.setServiceInterface(ContactService.class);
 
 		return contactExporter;
 	}//end contactExporter
+
+	@Bean("remoteContactService")
+	HttpInvokerProxyFactoryBean remoteContactService() {
+		HttpInvokerProxyFactoryBean httpInvokerProxyFactoryBean = new HttpInvokerProxyFactoryBean();
+		httpInvokerProxyFactoryBean.setServiceUrl("http://localhost:8084/ST/remoting/ContactService");
+		httpInvokerProxyFactoryBean.setServiceInterface(com.comtrade.st.remoting.ContactService.class);
+		return httpInvokerProxyFactoryBean;
+	}
 }//end Config
