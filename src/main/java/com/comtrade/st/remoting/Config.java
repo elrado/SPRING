@@ -5,10 +5,12 @@
  */
 package com.comtrade.st.remoting;
 
+import com.comtrade.st.remoting.jms.SimpleMessageListener;
 import com.comtrade.st.taskscheduling.*;
 import java.io.IOException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
+import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -92,4 +97,37 @@ public class Config {
 		httpInvokerProxyFactoryBean.setServiceInterface(com.comtrade.st.remoting.ContactService.class);
 		return httpInvokerProxyFactoryBean;
 	}
+
+	//JMS
+	SimpleMessageListener simpleMessageListener(){
+		return new SimpleMessageListener();
+	}
+
+	@Bean("connectionFactory")
+	ActiveMQConnectionFactory connectionFactory(){
+		ActiveMQConnectionFactory activemqCF = new ActiveMQConnectionFactory();
+		activemqCF.setBrokerURL("tcp://localhost:61616");
+		return activemqCF;
+	}
+
+	@Bean("consumerJmsListenerContainer")
+	DefaultMessageListenerContainer consumerJmsListenerContainer(){
+		DefaultMessageListenerContainer dmlc = new DefaultMessageListenerContainer();
+		dmlc.setConnectionFactory(connectionFactory());
+		MessageListenerAdapter listener = new MessageListenerAdapter();
+		listener.setDelegate(new SimpleMessageListener());
+		listener.setDefaultListenerMethod("onMessage");
+		dmlc.setDestinationName("prospring4");
+		dmlc.setMessageListener(listener);
+		return dmlc;
+	}
+
+	@Bean("jmsTemplate")
+	JmsTemplate jmsTemplate(ActiveMQConnectionFactory connectionFactory ){
+		JmsTemplate jt = new JmsTemplate(connectionFactory);
+		jt.setDefaultDestinationName("prospring4");
+		return jt;
+	}
+
+	
 }//end Config
