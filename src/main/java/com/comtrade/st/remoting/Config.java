@@ -106,7 +106,8 @@ public class Config {
 	@Bean("connectionFactory")
 	ActiveMQConnectionFactory connectionFactory(){
 		ActiveMQConnectionFactory activemqCF = new ActiveMQConnectionFactory();
-		activemqCF.setBrokerURL("tcp://localhost:61616");
+		activemqCF.setBrokerURL("tcp://localhost:61616");//embeded
+		//activemqCF.setBrokerURL("tcp://localhost:8161");
 		return activemqCF;
 	}
 

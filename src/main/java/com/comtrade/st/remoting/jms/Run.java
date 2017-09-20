@@ -31,10 +31,9 @@ public class Run {
 		BrokerService broker = new BrokerService();
 
 		TransportConnector connector = new TransportConnector();
-		connector.setUri(new URI("tcp://localhost:61616"));
+		connector.setUri(new URI("tcp://localhost:61616"));//Embeded
 		broker.addConnector(connector);
 		broker.start();
-
 		MessageSender messageSender = ctx.getBean("messageSender", MessageSender.class);
 		for (int i = 0; i < 10; i++) {
 			messageSender.sendMessage("Test message: " + i);
