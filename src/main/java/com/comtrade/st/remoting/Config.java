@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -31,7 +32,13 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 /**
  *
@@ -42,7 +49,25 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan(basePackages = "com.comtrade.st.remoting")
 @EnableJpaRepositories(entityManagerFactoryRef = "emfactory")/**/
 @EnableScheduling
-public class Config {
+@EnableWebMvc
+public class Config extends WebMvcConfigurerAdapter {
+
+	@Bean
+	public InternalResourceViewResolver viewResolver() {
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setViewClass(JstlView.class);
+		viewResolver.setPrefix("/WEB-INF/views/");
+		viewResolver.setSuffix(".jsp");
+		return viewResolver;
+	}
+
+	@Bean(name = "messageSource")
+	public ReloadableResourceBundleMessageSource getMessageSource() {
+		ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
+		resource.setBasename("classpath:messages");
+		resource.setDefaultEncoding("UTF-8");
+		return resource;
+	}
 
 	@Bean("dataSource")
 	public DataSource dataSource() {
@@ -99,12 +124,12 @@ public class Config {
 	}
 
 	//JMS
-	SimpleMessageListener simpleMessageListener(){
+	SimpleMessageListener simpleMessageListener() {
 		return new SimpleMessageListener();
 	}
 
 	@Bean("connectionFactory")
-	ActiveMQConnectionFactory connectionFactory(){
+	ActiveMQConnectionFactory connectionFactory() {
 		ActiveMQConnectionFactory activemqCF = new ActiveMQConnectionFactory();
 		activemqCF.setBrokerURL("tcp://localhost:61616");//embeded
 		//activemqCF.setBrokerURL("tcp://localhost:8161");
@@ -112,7 +137,7 @@ public class Config {
 	}
 
 	@Bean("consumerJmsListenerContainer")
-	DefaultMessageListenerContainer consumerJmsListenerContainer(){
+	DefaultMessageListenerContainer consumerJmsListenerContainer() {
 		DefaultMessageListenerContainer dmlc = new DefaultMessageListenerContainer();
 		dmlc.setConnectionFactory(connectionFactory());
 		MessageListenerAdapter listener = new MessageListenerAdapter();
@@ -124,11 +149,10 @@ public class Config {
 	}
 
 	@Bean("jmsTemplate")
-	JmsTemplate jmsTemplate(ActiveMQConnectionFactory connectionFactory ){
+	JmsTemplate jmsTemplate(ActiveMQConnectionFactory connectionFactory) {
 		JmsTemplate jt = new JmsTemplate(connectionFactory);
 		jt.setDefaultDestinationName("prospring4");
 		return jt;
 	}
 
-	
 }//end Config
